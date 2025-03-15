@@ -5,13 +5,11 @@ import Papa from 'papaparse';
 import { saveAs } from 'file-saver';
 import styles from '../styles/Home.module.css';
 
-// Constants for security and performance
-const SCAN_COOLDOWN_MS = 1500; // Reduced for faster scanning
+const SCAN_COOLDOWN_MS = 1500;
 const SESSION_STORAGE_KEY = 'hindiClubAttendance';
 const MAX_FAILED_ATTEMPTS = 5;
-const FAILED_ATTEMPT_TIMEOUT_MS = 30000; // 30 seconds
+const FAILED_ATTEMPT_TIMEOUT_MS = 30000;
 
-// Google Sheets URL - published to CSV format
 const GOOGLE_SHEET_ID = '1y08Sk67utKyfcMqIb65ffDlArFMZkuAFy99Ym4kYYvw';
 const GOOGLE_SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/export?format=csv`;
 
@@ -38,10 +36,8 @@ export default function Home() {
   const lockTimerRef = useRef(null);
   const audioRef = useRef(null);
 
-  // Load attendance data from session storage to persist across page refreshes
   useEffect(() => {
     try {
-      // Create audio element for scan feedback
       audioRef.current = new Audio('/beep.mp3');
       
       const savedData = sessionStorage.getItem(SESSION_STORAGE_KEY);
@@ -55,7 +51,6 @@ export default function Home() {
     }
   }, []);
 
-  // Save attendance data to session storage whenever it changes
   useEffect(() => {
     try {
       if (Object.keys(attendance).length > 0) {
@@ -71,13 +66,11 @@ export default function Home() {
     }
   }, [attendance, stats, sessionId]);
 
-  // Load data from Google Sheets
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
         
-        // Add a cache-busting parameter to avoid browser caching
         const timestamp = new Date().getTime();
         const url = `${GOOGLE_SHEET_CSV_URL}&_cb=${timestamp}`;
         
@@ -99,14 +92,23 @@ export default function Home() {
       } catch (googleSheetsError) {
         console.warn("Failed to fetch from Google Sheets, falling back to local sample:", googleSheetsError);
         
-        // Fallback to local sample data
-        
+        try {
+          const localResponse = await fetch('/sample-data.csv');
+          if (!localResponse.ok) {
+            throw new Error(`HTTP error! Status: ${localResponse.status}`);
+          }
+          const localData = await localResponse.text();
+          processCSVData(localData);
+          setIsLoading(false);
+        } catch (localError) {
+          setError(`Failed to load registration data: ${localError.message}. Please check your connection.`);
+          setIsLoading(false);
+        }
       }
     };
 
     fetchData();
     
-    // Set up a refresh interval (every 5 minutes)
     const refreshInterval = setInterval(() => {
       fetchData();
     }, 5 * 60 * 1000);
@@ -114,14 +116,12 @@ export default function Home() {
     return () => clearInterval(refreshInterval);
   }, []);
 
-  // Process CSV data with validation
   const processCSVData = useCallback((csvData) => {
     Papa.parse(csvData, {
       header: true,
       skipEmptyLines: true,
       complete: (results) => {
         if (results.data && results.data.length > 0) {
-          // Find the registration number column - in your CSV it's "Reg. No."
           const regNoKey = Object.keys(results.data[0]).find(key => 
             key.includes('Reg') || 
             key.includes('Registration')
@@ -141,11 +141,9 @@ export default function Home() {
             return;
           }
           
-          // Process the data
           const processedData = results.data
             .filter(row => row[regNoKey] && row[regNoKey].trim() !== '')
             .map(row => {
-              // Create a standardized record
               const record = {
                 regNo: row[regNoKey].toString().trim().toUpperCase(),
                 name: row[nameKey] ? row[nameKey].toString().trim() : 'Unknown',
@@ -156,7 +154,6 @@ export default function Home() {
               return record;
             });
           
-          // Check for duplicate registration numbers
           const regNos = processedData.map(item => item.regNo);
           const duplicates = regNos.filter((item, index) => regNos.indexOf(item) !== index);
           
@@ -166,20 +163,15 @@ export default function Home() {
           
           setRegistrationData(processedData);
           
-          // Initialize attendance state from the CSV
-          const initialAttendance = {};
+          const initialAttendance = { ...attendance };
           let presentCount = 0;
           
-          processedData.forEach(record => {
-            initialAttendance[record.regNo] = record.attended;
-            if (record.attended) presentCount++;
-          });
+          for (const regNo in initialAttendance) {
+            if (initialAttendance[regNo]) {
+              presentCount++;
+            }
+          }
           
-          // Merge with existing attendance data
-          const mergedAttendance = { ...initialAttendance };
-          
-          // Update stats
-          setAttendance(mergedAttendance);
           setStats({
             total: processedData.length,
             present: presentCount
@@ -193,15 +185,13 @@ export default function Home() {
         setIsLoading(false);
       }
     });
-  }, []);
+  }, [attendance]);
 
-  // Refresh data manually
   const refreshData = async () => {
     try {
       setIsLoading(true);
       setError(null);
       
-      // Add a cache-busting parameter to avoid browser caching
       const timestamp = new Date().getTime();
       const url = `${GOOGLE_SHEET_CSV_URL}&_cb=${timestamp}`;
       
@@ -226,7 +216,6 @@ export default function Home() {
     }
   };
 
-  // Handle file upload (as backup option)
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -247,21 +236,17 @@ export default function Home() {
     }
   };
 
-  // Start QR scanner with optimized settings
   const startScanner = async () => {
     if (scannerRef.current || !scannerDivRef.current) return;
     
     try {
-      // Get available cameras
       const devices = await Html5Qrcode.getCameras();
       setCameras(devices);
       
-      // Default to back camera on mobile if available
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       let defaultCamera = null;
       
       if (isMobile && devices.length > 1) {
-        // Try to find back camera on mobile devices
         const backCamera = devices.find(camera => 
           camera.label.toLowerCase().includes('back') || 
           camera.label.toLowerCase().includes('rear')
@@ -273,11 +258,9 @@ export default function Home() {
       
       setCameraId(defaultCamera);
       
-      // Use direct scanning for better performance on mobile
       if (isMobile) {
         startDirectScanning(defaultCamera);
       } else {
-        // Use scanner component for desktop
         const config = {
           fps: 10,
           qrbox: { width: 250, height: 250 },
@@ -297,7 +280,6 @@ export default function Home() {
     }
   };
   
-  // Direct scanning method for better performance
   const startDirectScanning = (cameraId) => {
     if (!cameraId) {
       setError("No camera found");
@@ -308,7 +290,7 @@ export default function Home() {
       html5QrCodeRef.current = new Html5Qrcode("qr-reader");
       
       const config = {
-        fps: 15,  // Higher FPS for faster scanning
+        fps: 15,
         qrbox: { width: 250, height: 250 },
         aspectRatio: 1.0,
       };
@@ -331,7 +313,6 @@ export default function Home() {
     }
   };
   
-  // Switch camera
   const switchCamera = async (newCameraId) => {
     if (isDirectScanning && html5QrCodeRef.current) {
       try {
@@ -343,7 +324,6 @@ export default function Home() {
     }
   };
 
-  // Clean up scanner on unmount
   useEffect(() => {
     return () => {
       if (scannerRef.current) {
@@ -370,9 +350,7 @@ export default function Home() {
     };
   }, [isDirectScanning]);
 
-  // Handle successful QR scan
   const onScanSuccess = (decodedText) => {
-    // Play beep sound
     try {
       if (audioRef.current) {
         audioRef.current.play().catch(e => console.log("Audio play failed:", e));
@@ -381,7 +359,6 @@ export default function Home() {
       console.log("Audio error:", e);
     }
     
-    // Prevent rapid scanning of the same code
     const now = new Date().getTime();
     if (lastScanned && lastScanned.code === decodedText && now - lastScanned.time < SCAN_COOLDOWN_MS) {
       return;
@@ -389,17 +366,13 @@ export default function Home() {
 
     setLastScanned({ code: decodedText, time: now });
 
-    // Sanitize input
-    const sanitizedInput = decodedText.trim();
+    const sanitizedInput = decodedText.trim().toUpperCase();
     
-    // Validate registration
     const registration = registrationData.find(reg => reg.regNo === sanitizedInput);
     
     if (registration) {
-      // Valid registration
       setFailedAttempts(0);
       
-      // Check if already marked as present
       if (attendance[sanitizedInput]) {
         setScanResult({
           success: true,
@@ -409,12 +382,15 @@ export default function Home() {
           timestamp: attendance[sanitizedInput]
         });
       } else {
-        // Mark as present
         const timestamp = new Date().toISOString();
-        setAttendance(prev => ({
-          ...prev,
-          [sanitizedInput]: timestamp
-        }));
+        
+        setAttendance(prev => {
+          const newAttendance = {
+            ...prev,
+            [sanitizedInput]: timestamp
+          };
+          return newAttendance;
+        });
         
         setScanResult({
           success: true,
@@ -430,7 +406,6 @@ export default function Home() {
         }));
       }
     } else {
-      // Invalid registration
       const newFailedAttempts = failedAttempts + 1;
       setFailedAttempts(newFailedAttempts);
       
@@ -440,12 +415,10 @@ export default function Home() {
         regNo: sanitizedInput
       });
       
-      // Lock scanner after too many failed attempts
       if (newFailedAttempts >= MAX_FAILED_ATTEMPTS) {
         setScannerLocked(true);
         setLockTimer(FAILED_ATTEMPT_TIMEOUT_MS / 1000);
         
-        // Start countdown timer
         if (lockTimerRef.current) {
           clearInterval(lockTimerRef.current);
         }
@@ -465,16 +438,14 @@ export default function Home() {
     }
   };
 
-  // Handle scan failures
   const onScanFailure = (error) => {
-    // Only log errors, don't display to user unless it's a permission issue
     if (error.toString().includes('permission')) {
       setError(`Camera permission denied: ${error}`);
     }
   };
 
-  // Toggle fullscreen mode
-  const toggleFullscreen = () => {
+
+const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch(err => {
         console.log(`Error attempting to enable fullscreen: ${err.message}`);
@@ -486,7 +457,6 @@ export default function Home() {
     }
   };
 
-  // Download full attendance report
   const downloadAttendanceReport = () => {
     try {
       const reportData = registrationData.map(reg => {
@@ -508,7 +478,6 @@ export default function Home() {
     }
   };
 
-  // Download report with only present attendees
   const downloadPresentOnlyReport = () => {
     try {
       const presentData = registrationData
@@ -530,7 +499,6 @@ export default function Home() {
     }
   };
 
-  // Reset attendance data
   const resetAttendance = () => {
     if (window.confirm('Are you sure you want to reset all attendance data? This cannot be undone.')) {
       setAttendance({});
@@ -710,8 +678,8 @@ export default function Home() {
       </main>
 
       <footer className={styles.footer}>
-        <p>Hindi Club Event Management System</p>
+        <p>Made by Garv Anand @ Tech Team,Hindi Club</p>
       </footer>
     </div>
   );
-} 
+}
