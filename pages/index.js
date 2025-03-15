@@ -100,18 +100,7 @@ export default function Home() {
         console.warn("Failed to fetch from Google Sheets, falling back to local sample:", googleSheetsError);
         
         // Fallback to local sample data
-        try {
-          const localResponse = await fetch('/sample-data.csv');
-          if (!localResponse.ok) {
-            throw new Error(`HTTP error! Status: ${localResponse.status}`);
-          }
-          const localData = await localResponse.text();
-          processCSVData(localData);
-          setIsLoading(false);
-        } catch (localError) {
-          setError(`Failed to load registration data: ${localError.message}. Please check your connection.`);
-          setIsLoading(false);
-        }
+        
       }
     };
 
