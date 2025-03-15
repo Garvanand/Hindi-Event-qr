@@ -30,6 +30,8 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
+        <meta http-equiv="Content-Security-Policy" content="connect-src 'self' https://docs.google.com https://googleusercontent.com;">
+
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
         <meta name="theme-color" content="#FF9933" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
