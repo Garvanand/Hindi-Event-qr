@@ -1,0 +1,23 @@
+{
+  "name": "hindi-club-qr-verification",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "file-saver": "^2.0.5",
+    "html5-qrcode": "^2.3.8",
+    "next": "^13.4.19",
+    "papaparse": "^5.4.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.49.0",
+    "eslint-config-next": "^13.4.19"
+  }
+} 

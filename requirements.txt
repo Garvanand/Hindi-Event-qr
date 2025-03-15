@@ -1,0 +1,12 @@
+qrcode
+Pillow
+python-dotenv
+pandas
+streamlit
+opencv-python-headless
+pyzbar
+numpy
+plotly
+setuptools
+wheel
+

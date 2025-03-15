@@ -1,0 +1,33 @@
+2025-03-14 02:55:37,089 - ERROR - Auto backup failed: st.session_state has no attribute "attendance_data". Did you forget to initialize it? More info: https://docs.streamlit.io/develop/concepts/architecture/session-state#initialization
+2025-03-14 02:58:26,983 - ERROR - Auto backup failed: st.session_state has no attribute "attendance_data". Did you forget to initialize it? More info: https://docs.streamlit.io/develop/concepts/architecture/session-state#initialization
+2025-03-14 02:58:39,670 - ERROR - Auto backup failed: st.session_state has no attribute "attendance_data". Did you forget to initialize it? More info: https://docs.streamlit.io/develop/concepts/architecture/session-state#initialization
+2025-03-14 02:58:46,531 - ERROR - Auto backup failed: st.session_state has no attribute "attendance_data". Did you forget to initialize it? More info: https://docs.streamlit.io/develop/concepts/architecture/session-state#initialization
+2025-03-14 03:00:35,802 - ERROR - Auto backup failed: st.session_state has no attribute "attendance_data". Did you forget to initialize it? More info: https://docs.streamlit.io/develop/concepts/architecture/session-state#initialization
+2025-03-14 03:00:39,738 - ERROR - Auto backup failed: st.session_state has no attribute "attendance_data". Did you forget to initialize it? More info: https://docs.streamlit.io/develop/concepts/architecture/session-state#initialization
+2025-03-14 03:00:42,365 - ERROR - Auto backup failed: st.session_state has no attribute "attendance_data". Did you forget to initialize it? More info: https://docs.streamlit.io/develop/concepts/architecture/session-state#initialization
+2025-03-14 03:00:59,006 - ERROR - Auto backup failed: st.session_state has no attribute "attendance_data". Did you forget to initialize it? More info: https://docs.streamlit.io/develop/concepts/architecture/session-state#initialization
+2025-03-14 03:00:59,092 - ERROR - Error marking attendance: st.session_state has no attribute "session_id". Did you forget to initialize it? More info: https://docs.streamlit.io/develop/concepts/architecture/session-state#initialization
+2025-03-14 03:03:29,876 - ERROR - Auto backup failed: st.session_state has no attribute "attendance_data". Did you forget to initialize it? More info: https://docs.streamlit.io/develop/concepts/architecture/session-state#initialization
+2025-03-14 03:03:50,583 - ERROR - Auto backup failed: st.session_state has no attribute "attendance_data". Did you forget to initialize it? More info: https://docs.streamlit.io/develop/concepts/architecture/session-state#initialization
+2025-03-14 03:04:09,247 - INFO - Marked attendance for vansh tomar  (24BEC10162)
+2025-03-14 03:04:09,260 - INFO - Attendance data saved to Hindi_Club_Attendance.csv and backups/Hindi_Club_Attendance_20250314_030409.csv
+2025-03-14 03:06:14,303 - INFO - Marked attendance for vansh tomar  (24BEC10162)
+2025-03-14 03:06:14,316 - INFO - Attendance data saved to Hindi_Club_Attendance.csv and backups/Hindi_Club_Attendance_20250314_030614.csv
+2025-03-14 03:06:36,372 - ERROR - Auto backup failed: st.session_state has no attribute "attendance_data". Did you forget to initialize it? More info: https://docs.streamlit.io/develop/concepts/architecture/session-state#initialization
+2025-03-14 03:12:00,215 - ERROR - Auto backup failed: st.session_state has no attribute "attendance_data". Did you forget to initialize it? More info: https://docs.streamlit.io/develop/concepts/architecture/session-state#initialization
+2025-03-14 03:12:58,930 - ERROR - Auto backup failed: st.session_state has no attribute "attendance_data". Did you forget to initialize it? More info: https://docs.streamlit.io/develop/concepts/architecture/session-state#initialization
+2025-03-14 03:12:58,938 - INFO - Loading attendance data from cache
+2025-03-14 03:16:30,491 - ERROR - Auto backup failed: st.session_state has no attribute "attendance_data". Did you forget to initialize it? More info: https://docs.streamlit.io/develop/concepts/architecture/session-state#initialization
+2025-03-14 03:16:30,500 - INFO - Loading attendance data from cache
+2025-03-14 03:16:39,230 - ERROR - Auto backup failed: st.session_state has no attribute "attendance_data". Did you forget to initialize it? More info: https://docs.streamlit.io/develop/concepts/architecture/session-state#initialization
+2025-03-14 03:16:39,237 - INFO - Loading attendance data from cache
+2025-03-14 03:22:00,708 - ERROR - Auto backup failed: st.session_state has no attribute "attendance_data". Did you forget to initialize it? More info: https://docs.streamlit.io/develop/concepts/architecture/session-state#initialization
+2025-03-14 03:22:00,732 - INFO - Fetching CSV from GitHub: https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/attendance.csv
+2025-03-14 03:22:01,073 - INFO - Loading attendance data from local cache
+2025-03-14 03:22:18,966 - INFO - Fetching CSV from GitHub: 
+2025-03-14 03:22:18,970 - ERROR - Error fetching CSV from GitHub: Invalid URL '': No scheme supplied. Perhaps you meant https://?
+2025-03-14 03:22:19,857 - INFO - Fetching CSV from GitHub: 
+2025-03-14 03:22:19,864 - ERROR - Error fetching CSV from GitHub: Invalid URL '': No scheme supplied. Perhaps you meant https://?
+2025-03-14 03:22:49,225 - ERROR - Auto backup failed: st.session_state has no attribute "attendance_data". Did you forget to initialize it? More info: https://docs.streamlit.io/develop/concepts/architecture/session-state#initialization
+2025-03-14 03:22:49,237 - INFO - Fetching CSV from GitHub: https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/attendance.csv
+2025-03-14 03:22:49,336 - INFO - Loading attendance data from local cache
