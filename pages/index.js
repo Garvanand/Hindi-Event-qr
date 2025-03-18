@@ -10,7 +10,7 @@ const SESSION_STORAGE_KEY = 'hindiClubAttendance';
 const MAX_FAILED_ATTEMPTS = 5;
 const FAILED_ATTEMPT_TIMEOUT_MS = 30000;
 
-const GOOGLE_SHEET_ID = '1y08Sk67utKyfcMqIb65ffDlArFMZkuAFy99Ym4kYYvw';
+const GOOGLE_SHEET_ID = '1_OhazQIXwTJ-lxf1I-UWWzukicaXhl9_OVxt-8PzI9o';
 const GOOGLE_SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/export?format=csv`;
 
 export default function Home() {
